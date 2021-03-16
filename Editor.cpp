@@ -54,6 +54,26 @@ void Editor::loop()
             continue;
         }
 
+        if(input.length() > 1 && input.at(0) == '/' && input.at(input.length() - 1) == '/' )
+        {
+            string text_to_search = input.substr(1,input.length()-2);
+            m_doc.searchText(text_to_search);
+            continue;
+        }
+
+        if(input.length() >= 2 && input.substr(0,2) == "w ")
+        {
+            string file_name = input.substr(2);
+            if(file_name.find(' ') != string::npos)
+            {
+                cout << "?" << endl; //DEBUG    
+            } else {
+                m_doc.saveDocument(file_name);
+            }
+            cout << file_name << endl; //DEBUG
+            continue;
+        }
+
         int num = 0;
         try {
             num = stoi(input);

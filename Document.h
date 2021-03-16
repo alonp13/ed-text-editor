@@ -28,6 +28,9 @@ class Document {
         void removeCurrentLine();
         void concatNextLine();
 
+        void searchText(string text);
+        void saveDocument(string file_name);
+
         // FOR DEBUG
         void printDoc();
 };

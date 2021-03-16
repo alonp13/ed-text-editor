@@ -8,6 +8,7 @@ Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
     if(!file)
     {
         cout << "No Such file!" << endl;
+        m_cursor = 0;
     }
 
     while (getline(file,line))
@@ -114,6 +115,43 @@ void Document::concatNextLine()
     string next_line = getLineAtCursor();
     string new_line = curr_line + next_line;
     setLineAtCursor(new_line);
+}
+
+void Document::searchText(string text)
+{
+    for(int i = m_cursor - 1; i < m_lines.size(); i++)
+    {
+        string curr_line = m_lines[i];
+        if(curr_line.find(text) != string::npos)
+        {
+            moveToLine(i + 1);
+            cout << curr_line << endl; // DEBUG
+            return;
+        }
+    }
+
+    int start_idx = m_cursor;
+    for(int i = 0 ; i < start_idx ; i++)
+    {
+        string curr_line = m_lines[i];
+        if(curr_line.find(text) != string::npos)
+        {
+            moveToLine(i + 1);
+            cout << curr_line << endl; // DEBUG
+            return;
+        }
+    }
+    cout << text << " Not Found!" << endl; // DEBUG
+}
+
+void Document::saveDocument(string file_name)
+{
+    ofstream file(file_name);
+    for (int i = 0; i < m_lines.size(); i++)
+    {
+        file << m_lines[i] << endl;
+    }
+    file.close();
 }
 
 // DEBUGGING
