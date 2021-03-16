@@ -2,7 +2,7 @@
 
 Editor::Editor(string doc_name) : m_doc_name(doc_name), m_doc(doc_name)
 {
-    m_doc.printDoc();
+    m_doc.printDoc(); // DEBUG
 }
 
 void Editor::loop()
@@ -18,6 +18,12 @@ void Editor::loop()
         if(input == "$")
         {
             m_doc.moveToEnd();
+            continue;
+        }
+
+        if(input == "j")
+        {
+            m_doc.concatNextLine();
             continue;
         }
 
@@ -69,7 +75,7 @@ void Editor::loop()
     }
 
     cout << "------------" << endl; //DEBUG
-    m_doc.printDoc();
+    m_doc.printDoc(); //DEBUG
 }
 
 vector<string> Editor::getText()

@@ -11,6 +11,8 @@ class Document {
         string m_doc_name;
         vector<string> m_lines;
         int m_cursor;
+        string getLineAtCursor();
+        void setLineAtCursor(string new_line);
 
     public:
         Document(): m_cursor(0) {};
@@ -24,6 +26,7 @@ class Document {
         void addTextBefore(vector<string> text_to_add);
         void replaceToText(vector<string> text_replace);
         void removeCurrentLine();
+        void concatNextLine();
 
         // FOR DEBUG
         void printDoc();

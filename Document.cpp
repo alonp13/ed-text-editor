@@ -19,6 +19,23 @@ Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
     file.close();
 }
 
+string Document::getLineAtCursor()
+{
+    if(m_cursor == 0 || m_cursor > m_lines.size())
+    {
+        return nullptr;
+    }
+    return m_lines.at(m_cursor - 1);
+}
+
+void Document::setLineAtCursor(string new_line)
+{
+    if(m_cursor == 0 || m_cursor > m_lines.size())
+    {
+        return;
+    }
+    m_lines[m_cursor-1] = new_line;
+}
 
 void Document::moveToLine(int line_to_move)
 {
@@ -87,6 +104,16 @@ void Document::removeCurrentLine()
     }
     m_lines = new_lines;
     m_cursor = min(m_cursor,(int)m_lines.size());
+}
+
+void Document::concatNextLine()
+{
+    if(m_cursor == m_lines.size()) return;
+    string curr_line = getLineAtCursor();
+    removeCurrentLine();
+    string next_line = getLineAtCursor();
+    string new_line = curr_line + next_line;
+    setLineAtCursor(new_line);
 }
 
 // DEBUGGING
