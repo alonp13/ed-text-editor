@@ -13,6 +13,7 @@ class Document {
         int m_cursor;
         string getLineAtCursor();
         void setLineAtCursor(string new_line);
+        void printAtCursor();
 
     public:
         Document(): m_cursor(0) {};

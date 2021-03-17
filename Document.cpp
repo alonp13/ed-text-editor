@@ -4,7 +4,7 @@ Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
 {
     ifstream file(doc_name);
     string line;
-
+    int char_counter = 0;
     if(!file)
     {
         cout << "No Such file!" << endl;
@@ -14,9 +14,11 @@ Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
     while (getline(file,line))
     {
         string line_to_push = line;
+        char_counter += line_to_push.length();
         m_lines.push_back(line_to_push);
     }
 
+    cout << char_counter << endl;
     file.close();
 }
 
@@ -38,12 +40,19 @@ void Document::setLineAtCursor(string new_line)
     m_lines[m_cursor-1] = new_line;
 }
 
+void Document::printAtCursor()
+{
+    cout << getLineAtCursor() << endl;
+}
+
+
 void Document::moveToLine(int line_to_move)
 {
     if(line_to_move <= m_lines.size())
     {
         m_cursor = line_to_move;
     }
+    printAtCursor();
 }
 
 void Document::moveCursorForward(int lines_to_move)
@@ -52,6 +61,7 @@ void Document::moveCursorForward(int lines_to_move)
     {
         m_cursor += lines_to_move;
     }
+    printAtCursor();
 }
 
 void Document::moveToEnd()
@@ -91,7 +101,7 @@ void Document::addTextBefore(vector<string> text_to_add)
 void Document::replaceToText(vector<string> text_replace)
 {
     removeCurrentLine();
-    addTextBefore(text_replace);
+    addTextAfter(text_replace);
 }
 
 void Document::removeCurrentLine()
@@ -115,6 +125,7 @@ void Document::concatNextLine()
     string next_line = getLineAtCursor();
     string new_line = curr_line + next_line;
     setLineAtCursor(new_line);
+    printAtCursor();
 }
 
 void Document::searchText(string text)
@@ -125,7 +136,7 @@ void Document::searchText(string text)
         if(curr_line.find(text) != string::npos)
         {
             moveToLine(i + 1);
-            cout << curr_line << endl; // DEBUG
+            printAtCursor();
             return;
         }
     }
@@ -137,11 +148,10 @@ void Document::searchText(string text)
         if(curr_line.find(text) != string::npos)
         {
             moveToLine(i + 1);
-            cout << curr_line << endl; // DEBUG
+            printAtCursor();
             return;
         }
     }
-    cout << text << " Not Found!" << endl; // DEBUG
 }
 
 void Document::replaceStrings(string old_str, string new_str)
@@ -149,7 +159,7 @@ void Document::replaceStrings(string old_str, string new_str)
     string curr_line = getLineAtCursor();
     int old_idx = curr_line.find(old_str);
     string before_old = curr_line.substr(0,old_idx);
-    string after_old = curr_line.substr(old_idx + 1);
+    string after_old = curr_line.substr(old_idx + old_str.length());
     string after_change = before_old + new_str + after_old;
     setLineAtCursor(after_change);
 

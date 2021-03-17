@@ -10,6 +10,13 @@ void Editor::loop()
     string input;
     while(getline(cin,input))
     {
+        // DEBUG
+        if(input == "DEBUG")
+        {
+            m_doc.printDoc();
+            continue;
+        }
+
         if (input == "q")
         {
             break;
@@ -70,7 +77,6 @@ void Editor::loop()
             } else {
                 m_doc.saveDocument(file_name);
             }
-            cout << file_name << endl; //DEBUG
             continue;
         }
 
