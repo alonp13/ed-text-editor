@@ -11,7 +11,6 @@ class Editor
 
     public:
         Editor(): m_doc() {};
-        Editor(string doc_name);
+        Editor(string doc_name): m_doc_name(doc_name), m_doc(doc_name) {};
         void loop();
-
 };  

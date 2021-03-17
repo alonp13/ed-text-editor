@@ -6,7 +6,6 @@ int main(int argc, char* argv[])
     {
         case 1:
         {
-            cout << argv[0] << endl;
             Editor editor;
             editor.loop();
             break;
@@ -14,7 +13,6 @@ int main(int argc, char* argv[])
 
         case 2:
         {
-            cout << argv[1] << endl;
             Editor editor(argv[1]);
             editor.loop();
             break;
@@ -22,7 +20,7 @@ int main(int argc, char* argv[])
 
         default:
         {
-            cout << "default" << endl;
+            cout << "Wrong arguments!" << endl;
             break;
         }
     }

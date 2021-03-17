@@ -1,10 +1,6 @@
 #include "Editor.h"
 
-Editor::Editor(string doc_name) : m_doc_name(doc_name), m_doc(doc_name)
-{
-    m_doc.printDoc(); // DEBUG
-}
-
+// Handles input from the user
 void Editor::loop()
 {
     string input;
@@ -17,23 +13,27 @@ void Editor::loop()
             continue;
         }
 
+        // 'q' option
         if (input == "q")
         {
             break;
         }
 
+        // '$' option
         if(input == "$")
         {
             m_doc.moveToEnd();
             continue;
         }
 
+        // 'j' option
         if(input == "j")
         {
             m_doc.concatNextLine();
             continue;
         }
 
+        // 'a' option
         if(input == "a")
         {
             vector<string> text_inserted = getText();
@@ -41,12 +41,14 @@ void Editor::loop()
             continue;
         }
 
+        // 'd' option
         if(input == "d")
         {
             m_doc.removeCurrentLine();
             continue;
         } 
 
+        // 'i' option
         if(input == "i")
         {
             vector<string> text_inserted = getText();
@@ -54,6 +56,7 @@ void Editor::loop()
             continue;
         }
 
+        // 'c' option
         if(input == "c")
         {
             vector<string> text_inserted = getText();
@@ -61,6 +64,7 @@ void Editor::loop()
             continue;
         }
 
+        // '/text/' option
         if(input.length() > 1 && input.at(0) == '/' && input.at(input.length() - 1) == '/' )
         {
             string text_to_search = input.substr(1,input.length()-2);
@@ -68,6 +72,7 @@ void Editor::loop()
             continue;
         }
 
+        // 'w file' option
         if(input.length() >= 2 && input.substr(0,2) == "w ")
         {
             string file_name = input.substr(2);
@@ -80,6 +85,7 @@ void Editor::loop()
             continue;
         }
 
+        // 's/old/new/' option
         if(input.length() > 2 && input.substr(0,2) == "s/" && input.at(input.length() - 1) == '/')
         {
             string command = input.substr(2,input.length() - 3);
@@ -89,25 +95,21 @@ void Editor::loop()
             {
                 string old_str = command.substr(0,slash_idx);
                 string new_str = command.substr(slash_idx + 1);
-                cout << "old_str " <<  old_str << endl; //DEBUG
-                cout << "new_str " << new_str << endl; //DEBUG
 
                 m_doc.replaceStrings(old_str,new_str);
             } 
             continue;
         }
 
+        // Cursor moves options
         int num = 0;
         try {
             num = stoi(input);
-            cout << "NUMBER " << num << endl; //DEBUG
 
             if(input.at(0) == '+' || input.at(0) == '-')
             {
-                cout << "MOVE CURSOR " << num << endl; //DEBUG
                 m_doc.moveCursorForward(num);
             } else {
-                cout << "MOVE TO LINE " << num << endl; //DEBUG
                 m_doc.moveToLine(num);
             }
 
@@ -117,29 +119,22 @@ void Editor::loop()
 
     }
 
-    cout << "------------" << endl; //DEBUG
-    m_doc.printDoc(); //DEBUG
 }
 
+// Returns vector of strings recieving from the user
+// when 'a','i' and 'c' options are called
 vector<string> Editor::getText()
 {
     vector<string> res;
-    
-
-    cout << "ENTERED getText()" << endl; // DEBUG
     string input;
     
     while (getline(cin,input))
     {        
-        
-        cout << "INPUT: " << input << endl; // DEBUG
         if(input == ".") break;
 
         string text_input = input;
         res.push_back(text_input);
     }
-
-    cout << "EXITED getText()" << endl; // DEBUG
     
     return res;
 }

@@ -1,5 +1,6 @@
 #include "Document.h"
 
+// Constructor that loads doc_name file into vector of strings
 Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
 {
     ifstream file(doc_name);
@@ -22,6 +23,7 @@ Document::Document(string doc_name): m_doc_name(doc_name), m_cursor(1)
     file.close();
 }
 
+// Method that returns the line in current position of the cursor
 string Document::getLineAtCursor()
 {
     if(m_cursor == 0 || m_cursor > m_lines.size())
@@ -31,6 +33,7 @@ string Document::getLineAtCursor()
     return m_lines.at(m_cursor - 1);
 }
 
+// Method that sets the line in current position of the cursor
 void Document::setLineAtCursor(string new_line)
 {
     if(m_cursor == 0 || m_cursor > m_lines.size())
@@ -40,12 +43,13 @@ void Document::setLineAtCursor(string new_line)
     m_lines[m_cursor-1] = new_line;
 }
 
+// Method that prints the current line
 void Document::printAtCursor()
 {
     cout << getLineAtCursor() << endl;
 }
 
-
+// Moves to given line
 void Document::moveToLine(int line_to_move)
 {
     if(line_to_move <= m_lines.size())
@@ -55,6 +59,7 @@ void Document::moveToLine(int line_to_move)
     printAtCursor();
 }
 
+// Moves forward by given steps
 void Document::moveCursorForward(int lines_to_move)
 {
     if(m_cursor + lines_to_move <= m_lines.size())
@@ -64,12 +69,13 @@ void Document::moveCursorForward(int lines_to_move)
     printAtCursor();
 }
 
+// Moves to the end of the document
 void Document::moveToEnd()
 {
     m_cursor = m_lines.size();
 }
 
-
+// Adds text given after the current position of the cursor ('a' option)
 void Document::addTextAfter(vector<string> text_to_add)
 {
     int idx = m_cursor;
@@ -84,6 +90,7 @@ void Document::addTextAfter(vector<string> text_to_add)
     m_cursor = idx;
 }
 
+// Adds text given before the current position of the cursor ('i' option)
 void Document::addTextBefore(vector<string> text_to_add)
 {
     int idx = max(m_cursor - 1,0);
@@ -98,12 +105,14 @@ void Document::addTextBefore(vector<string> text_to_add)
     m_cursor = idx;
 }
 
+// Replaces text given with the line in current position of the cursor ('c' option)
 void Document::replaceToText(vector<string> text_replace)
 {
     removeCurrentLine();
     addTextAfter(text_replace);
 }
 
+// Removes the line in current position of the cursor ('d' option)
 void Document::removeCurrentLine()
 {
     if (m_cursor == 0) return;
@@ -117,6 +126,7 @@ void Document::removeCurrentLine()
     m_cursor = min(m_cursor,(int)m_lines.size());
 }
 
+// Merges the next line to this line ('j' option)
 void Document::concatNextLine()
 {
     if(m_cursor == m_lines.size()) return;
@@ -128,6 +138,7 @@ void Document::concatNextLine()
     printAtCursor();
 }
 
+// Moves to the line with first appearance of text ('/text/' option)
 void Document::searchText(string text)
 {
     for(int i = m_cursor - 1; i < m_lines.size(); i++)
@@ -154,6 +165,7 @@ void Document::searchText(string text)
     }
 }
 
+// Replaces strings in current line ('s/old/new/' option)
 void Document::replaceStrings(string old_str, string new_str)
 {
     string curr_line = getLineAtCursor();
@@ -165,6 +177,7 @@ void Document::replaceStrings(string old_str, string new_str)
 
 }
 
+// Writes to file_name
 void Document::saveDocument(string file_name)
 {
     ofstream file(file_name);
