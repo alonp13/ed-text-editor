@@ -74,6 +74,23 @@ void Editor::loop()
             continue;
         }
 
+        if(input.length() > 2 && input.substr(0,2) == "s/" && input.at(input.length() - 1) == '/')
+        {
+            string command = input.substr(2,input.length() - 3);
+            
+            int slash_idx = command.find('/');
+            if(slash_idx != string::npos)
+            {
+                string old_str = command.substr(0,slash_idx);
+                string new_str = command.substr(slash_idx + 1);
+                cout << "old_str " <<  old_str << endl; //DEBUG
+                cout << "new_str " << new_str << endl; //DEBUG
+
+                m_doc.replaceStrings(old_str,new_str);
+            } 
+            continue;
+        }
+
         int num = 0;
         try {
             num = stoi(input);

@@ -144,6 +144,17 @@ void Document::searchText(string text)
     cout << text << " Not Found!" << endl; // DEBUG
 }
 
+void Document::replaceStrings(string old_str, string new_str)
+{
+    string curr_line = getLineAtCursor();
+    int old_idx = curr_line.find(old_str);
+    string before_old = curr_line.substr(0,old_idx);
+    string after_old = curr_line.substr(old_idx + 1);
+    string after_change = before_old + new_str + after_old;
+    setLineAtCursor(after_change);
+
+}
+
 void Document::saveDocument(string file_name)
 {
     ofstream file(file_name);

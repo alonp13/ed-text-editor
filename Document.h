@@ -29,6 +29,7 @@ class Document {
         void concatNextLine();
 
         void searchText(string text);
+        void replaceStrings(string old_str, string new_str);
         void saveDocument(string file_name);
 
         // FOR DEBUG
